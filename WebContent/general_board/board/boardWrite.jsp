@@ -85,7 +85,7 @@
 							</tr>
 							<tr>
 								<th>이름</th>
-								<td><input type="password" name="name" class="box_name"></td>
+								<td><input type="text" name="name" class="box_name"></td>
 							</tr>
 							<tr>
 								<th>내용</th>
