@@ -5,9 +5,11 @@
 <%
 	String unq = request.getParameter("unq");
 
+	// 조회수증가 SQL
 	String sql2 = "update nboard set hits=hits+1 where unq = '"+unq+"' ";
 	stmt.executeUpdate(sql2);
 
+	// 화면 출력 SQL
 	String sql = "select title, name, content, rdate ";
 		   sql+= " from nboard ";
 		   sql+= " where unq='"+unq+"'";
@@ -112,9 +114,10 @@
 					</table>
 					
 					<div style="width:600px; text-align: center; margin-top:10px;">
-						<button type="button">목록</button>
-						<button type="button">수정</button>
-						<button type="button">삭제</button>
+						<button type="button" onclick="location= 'boardWrite.jsp' ">입력</button>
+						<button type="button" onclick="location= 'boardList.jsp' ">목록</button>
+						<button type="button" onclick="location= 'boardModify.jsp?unq=<%=unq %>' ">수정</button>
+						<button type="button" onclick="location= 'passWrite.jsp?unq=<%=unq %>' ">삭제</button>
 					</div>
 				</form>
 			</article>
