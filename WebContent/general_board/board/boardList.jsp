@@ -4,8 +4,20 @@
 <%@ include file = "../include/dbCon.jsp" %>
 
 <%
-	String sql = "SELECT unq, title, name, date_format(rdate, '%Y-%m-%d') rdate, hits FROM nboard ";
-		   sql+= " ORDER BY unq DESC";
+	String sqlTot = "SELECT count(*) total FROM nboard";
+	ResultSet rsTot = stmt.executeQuery(sqlTot);
+	rsTot.next();
+	int total = rsTot.getInt("total"); // 전체 데이터 개수
+	
+	int rownumber = total; // 행번호
+
+	String sql = " SELECT unq,"; 
+		   sql+= "	title, ";
+		   sql+= "	name, "; 
+		   sql+= "	date_format(rdate, '%Y-%m-%d') rdate,"; // left(rdate,10), subString(1, 10)
+		   sql+= "	hits";
+		   sql+= "	FROM nboard ";
+		   sql+= " 	ORDER BY unq DESC ";
 	ResultSet rs = stmt.executeQuery(sql);
 
 %>
@@ -38,7 +50,17 @@
 		<section>
 			<article>
 				<table>
-					<caption> 게시판 목록 </caption>
+					<caption> 
+						<div>게시판 목록</div>
+						<div style="display:flex; align-item: center; justify-content:center; margin-top: 5px;">
+							<div style="font-size:12px; width:50%; height:30px; line-height:30px; text-align:left; font-weight:400; ">
+								전체 데이터 개수 : 총 <%=total %>개
+							</div> 
+							<div style="width:50%; text-align:right; height:30px margin-top:10px;">
+								<button type="button" onclick="location='boardWrite.jsp' ">글쓰기</button>
+							</div>
+						</div>
+					</caption>
 					<colgroup>
 						<col width="10%" />
 						<col width="50%" />
@@ -65,17 +87,19 @@
 								String rdate = rs.getString("rdate");
 						%>
 							<tr>
-								<td></td>
+								<td><%=rownumber %></td>
 								<td><%=title %></td>
 								<td><%=name %></td>
 								<td><%=rdate %></td>
 								<td><%=hits %></td>
 							</tr>
 						<%
+								rownumber--;
 							}
 						%>
 					</tbody>
 				</table>
+				
 			</article>
 		</section>
 		<footer>
