@@ -23,6 +23,10 @@
 		title = rs.getString("title");
 		name = rs.getString("name");
 		content = rs.getString("content");
+		// replace메서드 \를 br로 바꿀수가 있다
+		content = content.replace("\n","<br>");
+		// 공간하나를 => nbsp;로 바꾼다
+		content = content.replace(" ", "&nbsp;");
 		rdate = rs.getString("rdate");
 	} else {
 %>
@@ -94,7 +98,7 @@
 							</tr>
 							<tr>
 								<th>내용</th>
-								<td>
+								<td height="100" valign="top">
 									<%=content %>
 								</td>
 							</tr>
