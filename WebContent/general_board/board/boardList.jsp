@@ -56,7 +56,7 @@
 							<div style="font-size:12px; width:50%; height:30px; line-height:30px; text-align:left; font-weight:400; ">
 								전체 데이터 개수 : 총 <%=total %>개
 							</div> 
-							<div style="width:50%; text-align:right; height:30px margin-top:10px;">
+							<div style="width:50%; text-align:right; height:30px; margin-top:10px;">
 								<button type="button" onclick="location='boardWrite.jsp' ">글쓰기</button>
 							</div>
 						</div>
@@ -88,7 +88,9 @@
 						%>
 							<tr>
 								<td><%=rownumber %></td>
-								<td><%=title %></td>
+								<td align="left">
+									<a href="boardDetail.jsp?unq=<%=unq %>"><%=title %></a>
+								</td>
 								<td><%=name %></td>
 								<td><%=rdate %></td>
 								<td><%=hits %></td>
