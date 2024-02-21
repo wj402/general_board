@@ -4,12 +4,32 @@
 <%@ include file = "../include/dbCon.jsp" %>
 
 <%
+	int unit = 10;
+
+	String vpage = request.getParameter("vpage");
+	if( vpage == null ) {
+		vpage = "1";
+	}
+	
+	int v_page = Integer.parseInt(vpage);
+	
+	// (1 -> 0) ; (2 -> 10) ; (3 -> 20) ; (4 -> 30)
+	int index_no = (v_page-1) * unit;
+
 	String sqlTot = "SELECT count(*) total FROM nboard";
 	ResultSet rsTot = stmt.executeQuery(sqlTot);
 	rsTot.next();
 	int total = rsTot.getInt("total"); // 전체 데이터 개수
 	
-	int rownumber = total; // 행번호
+	// 19 -> 2, 29 -> 3, 39 -> 4
+	// 19/10 -> 1.9 -> ceil(1.9) -> 2.0 -> (int)2.0 -> 2
+	// 원래 나누기를 하면 -> 1.0이 나옴
+	// 29/10 -> 2.9 -> ceil(2.9) -> 3.0 
+	// 39/10 -> 3.9 -> ceil(3.9) -> 4.0
+	// ceil은 올림메서드
+	int lastpage = (int)Math.ceil((double)total/unit);
+	
+	int rownumber = total - index_no; // 행번호
 
 	String sql = " SELECT unq,"; 
 		   sql+= "	title, ";
@@ -18,6 +38,7 @@
 		   sql+= "	hits";
 		   sql+= "	FROM nboard ";
 		   sql+= " 	ORDER BY unq DESC ";
+		   sql+= "	LIMIT "+index_no+","+unit;	// limit 시작번호, 출력개수 (0, 10, 20)
 	ResultSet rs = stmt.executeQuery(sql);
 
 %>
@@ -49,7 +70,7 @@
 		</aside>
 		<section>
 			<article>
-				<table>
+				<table >
 					<caption> 
 						<div>게시판 목록</div>
 						<div style="display:flex; align-item: center; justify-content:center; margin-top: 5px;">
@@ -101,6 +122,17 @@
 						%>
 					</tbody>
 				</table>
+				
+				<div style="width:600px; text-align:center; margin-top: 10px;">
+					<%
+						for( int i=1; i<=lastpage; i++ ) {
+							//out.print("<a href='boardList.jsp?vpage="+i+"'>" +i+ "</a> " );
+					%>
+						<a href="boardList.jsp?vpage=<%=i %>"><%=i %></a>
+					<%
+						}
+					%>
+				</div>
 				
 			</article>
 		</section>
